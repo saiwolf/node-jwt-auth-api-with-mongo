@@ -121,4 +121,7 @@ dist
 dist/
 
 # ENV files
-.env*
+.env
+.env.development
+.env.testing
+.env.production
