@@ -21,7 +21,7 @@ function authorize(roles: string | string[] = []) {
 
             if (!user || (roles.length && !roles.includes(user.role))) {
                 // user no longer exists or role not authorized
-                return res.status(401).json({ message: 'Unauthorize' });
+                return res.status(401).json({ message: 'Unauthorized' });
             }
 
             // authentication and authorization successful

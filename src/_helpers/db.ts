@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import UserModel from '../users/user.model';
-import RefreshToken from '../users/refresh-token.model';
+import UserModel from '../models/user.model';
+import RefreshToken from '../models/refresh-token.model';
 
 mongoose.Promise = global.Promise;
 

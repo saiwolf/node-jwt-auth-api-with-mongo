@@ -2,8 +2,9 @@ import app from './app';
 import config from './_config';
 import Logger from './_middleware/logger';
 import mongoose from 'mongoose';
+import { Server } from 'http';
 
-let server: any;
+let server: Server;
 try {
     mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
         Logger.info('Connected to MongoDB\n');
@@ -17,6 +18,7 @@ try {
 
 const exitHandler = () => {
     if (server) {
+        server.close();
         Logger.info('Server closed');
         process.exit(1);
     } else {

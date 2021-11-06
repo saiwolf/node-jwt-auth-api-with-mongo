@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import db from '../_helpers/db';
-import { IUserProps } from './user.model';
+import { IUserProps } from '../models/user.model';
 
 export interface IUserServiceProps {
     id?: string,

@@ -3,7 +3,7 @@ import Joi from 'joi';
 import validateRequest from '../_middleware/validate-request';
 import authorize from '../_middleware/authorize';
 import Role from '../_helpers/role';
-import userService, { IUserServiceProps } from './user.service';
+import userService, { IUserServiceProps } from '../services/user.service';
 
 const router = express.Router();
 

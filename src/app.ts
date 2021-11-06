@@ -6,7 +6,7 @@ import helmet from 'helmet';
 import morganMiddleware from './_middleware/morgan';
 
 
-import usersController from './users/user.controller';
+import usersController from './controllers/user.controller';
 import swaggerDocs from './_helpers/swagger';
 
 import createTestUser from './_helpers/create-test-user';

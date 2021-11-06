@@ -1,3 +1,4 @@
+import AppError from '../_helpers/CustomError';
 import dotenv from 'dotenv';
 import path from 'path';
 import Joi from 'joi';
@@ -26,7 +27,7 @@ const envVarsSchema = Joi.object()
 const { value: envVars, error } = envVarsSchema.prefs({ errors: { label: 'key' } }).validate(process.env);
 
 if (error) {
-    throw new Error(`Config validation error: ${error.message}`);
+    throw new AppError(`Config validation error: ${error.message}`);
 }
 
 const mongooseConfigOptions: ConnectOptions = {
