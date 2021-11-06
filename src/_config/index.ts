@@ -13,11 +13,13 @@ const envVarsSchema = Joi.object()
         MONGODB_URL: Joi.string().required().description('Mongo DB url'),
         MONGODB_USER: Joi.string().description('Mongo DB user'),
         MONGODB_PASS: Joi.string().description('Mongo DB pass'),
-        // SMTP_HOST: Joi.string().description('server that will send the emails'),
-        // SMTP_PORT: Joi.number().description('port to connect to the email server'),
-        // SMTP_USERNAME: Joi.string().description('username for email server'),
-        // SMTP_PASSWORD: Joi.string().description('password for email server'),
-        // EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
+        SMTP_HOST: Joi.string().description('server that will send the emails'),
+        SMTP_PORT: Joi.number().description('port to connect to the email server'),
+        SMTP_USERNAME: Joi.string().description('username for email server'),
+        SMTP_PASSWORD: Joi.string().description('password for email server'),
+        SMTP_AUTH: Joi.boolean().description('Does the SMTP host require authentication?'),
+        SMTP_AUTH_TYPE: Joi.string().description('SMTP Auth mecanism'),
+        EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
     })
     .unknown();
 
@@ -30,6 +32,23 @@ if (error) {
 const mongooseConfigOptions: ConnectOptions = {
     autoIndex: true,
     autoCreate: true
+}
+
+const emailConfigOptions = {
+    smtp: {
+        host: envVars.SMTP_HOST,
+        port: envVars.SMTP_PORT,
+        auth_type: envVars.SMTP_AUTH_TYPE.toLower(),
+        auth: {},
+    },
+    from: envVars.EMAIL_FROM,
+}
+
+if (envVars.SMTP_AUTH) {
+    Object.assign(emailConfigOptions.smtp.auth, {
+        user: envVars.SMTP_USERNAME,
+        pass: envVars.SMTP_PASSWORD,
+    });
 }
 
 if (envVars.MONGODB_USER && envVars.MONGODB_PASS) {
@@ -49,16 +68,6 @@ export default {
     mongoose: {
         url: envVars.MONGODB_URL + (envVars.NODE_ENV === 'test' ? '-test' : ''),
         options: mongooseConfigOptions,
-    }
-    // email: {
-    //     smtp: {
-    //         host: envVars.SMTP_HOST,
-    //         port: envVars.SMTP_PORT,
-    //         auth: {
-    //             user: envVars.SMTP_USERNAME,
-    //             pass: envVars.SMTP_PASSWORD,
-    //         },
-    //     },
-    //     from: envVars.EMAIL_FROM,
-    // },
+    },
+    email: emailConfigOptions,
 };
