@@ -119,9 +119,3 @@ dist
 
 # built app
 dist/
-
-# ENV files
-.env
-.env.development
-.env.testing
-.env.production

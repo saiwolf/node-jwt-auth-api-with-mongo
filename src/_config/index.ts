@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import path from 'path';
 import Joi from 'joi';
+import { ConnectOptions } from 'mongoose';
 
 dotenv.config({ path: path.join(__dirname, '../../.env') });
 
@@ -26,6 +27,19 @@ if (error) {
     throw new Error(`Config validation error: ${error.message}`);
 }
 
+const mongooseConfigOptions: ConnectOptions = {
+    autoIndex: true,
+    autoCreate: true
+}
+
+if (envVars.MONGODB_USER && envVars.MONGODB_PASS) {
+    Object.assign(mongooseConfigOptions, {
+        authSource: "admin",
+        user: envVars.MONGODB_USER,
+        pass: envVars.MONGODB_PASS,
+    })
+}
+
 export default {
     env: envVars.NODE_ENV,
     app: {
@@ -34,13 +48,7 @@ export default {
     port: envVars.PORT,
     mongoose: {
         url: envVars.MONGODB_URL + (envVars.NODE_ENV === 'test' ? '-test' : ''),
-        options: {
-            autoIndex: true,
-            autoCreate: true,
-            authSource: "admin",
-            user: envVars.MONGODB_USER ? envVars.MONGODB_USER : null,
-            pass: envVars.MONGODB_PASS ? envVars.MONGODB_PASS : null,
-        },
+        options: mongooseConfigOptions,
     }
     // email: {
     //     smtp: {

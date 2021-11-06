@@ -1,15 +1,11 @@
-import mongoose, { ConnectOptions } from 'mongoose';
 import app from './app';
 import config from './_config';
 import Logger from './_middleware/logger';
+import mongoose from 'mongoose';
 
 let server: any;
 try {
-    const mongooseOptions: ConnectOptions = {
-        autoIndex: true,
-        autoCreate: true,
-    };
-    mongoose.connect(config.mongoose.url, mongooseOptions).then(() => {
+    mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
         Logger.info('Connected to MongoDB\n');
         server = app.listen(process.env.PORT, () => {
             Logger.info(`Server is up and running @ http://localhost:${config.port}`);
