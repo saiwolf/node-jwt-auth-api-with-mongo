@@ -1,4 +1,4 @@
-import config from '../config';
+import config from '../_config';
 import db from '../_helpers/db';
 import { Response, NextFunction } from 'express';
 import jwt from 'express-jwt';

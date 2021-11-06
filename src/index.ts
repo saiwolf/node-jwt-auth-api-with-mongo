@@ -1,6 +1,6 @@
 import mongoose, { ConnectOptions } from 'mongoose';
 import app from './app';
-import config from './config';
+import config from './_config';
 import Logger from './_middleware/logger';
 
 let server: any;
