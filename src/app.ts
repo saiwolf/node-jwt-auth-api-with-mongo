@@ -32,6 +32,11 @@ app.use('/api/v1/posts', postsController);
 // swagger docs route
 app.use('/api/v1/docs', swaggerDocs);
 
+// 404 on missing routes
+app.use('*', function (_, res) {
+    res.sendStatus(404).end();
+});
+
 // global error handler
 app.use(errorHandler);
 

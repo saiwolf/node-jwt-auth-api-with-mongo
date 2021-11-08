@@ -8,6 +8,181 @@ servers:
     description: Local development server
 
 paths:
+  /api/v1/posts:
+      get:
+          summary: Get a list of all posts
+          description: Get All Posts
+          operationId: getAll
+          security:
+              - bearearAuth: []
+          responses:
+              "200":
+                  description: An array of posts
+                  content:
+                      application/json:
+                          schema:
+                              type: array
+                              items:
+                                  type: object
+                                  properties:
+                                      id:
+                                          type: string
+                                          example: "5eb12e197e06a76ccdefc121"
+                                      title:
+                                          type: string
+                                          example: "My first post!"
+                                      createdAt:
+                                          type: string
+                                          example: "2021-11-08 11:25:30"
+                                      updatedAt:
+                                          type: string
+                                          example: "2021-11-08 15:15:30"
+                                      content:
+                                          type: string
+                                          example: "Lorem Ipsum Doler Set Amit"
+              "401":
+                  $ref: "#/components/responses/UnauthorizedError"
+              "404":
+                  $ref: "#/components/responses/NotFoundError"
+      post:
+        summary: Create a new post
+        description: Post created with user's id
+        operationId: create
+        security:
+          - bearerAuth: []
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                    title:
+                        type: string
+                        example: "My first post!"
+                    createdAt:
+                        type: string
+                        example: "2021-11-08 11:25:30"
+                    updatedAt:
+                        type: string
+                        example: "2021-11-08 15:15:30"
+                    content:
+                        type: string
+                        example: "Lorem Ipsum Doler Set Amit"
+                    author:
+                        type: string
+                        example: "5eb12e197e06a76ccdefc121"
+        responses:
+          "201":
+            description: Post created.
+            headers:
+              Location:
+                description: "URL to newly created post"
+                schema:
+                  type: string
+                  example: https://api.url/api/v1/posts/5eb12e197e06a76ccdefc121
+          "400":
+            description: Validation error. Bad data sent from client.
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: "The `title` field is too long."
+  /api/v1/posts/{id}:
+    parameters:
+      - in: path
+        name: id
+        description: Post id
+        required: true
+        example: "5eb12e197e06a76ccdefc121"
+        schema:
+          type: string
+    get:
+      summary: Get a single post by its id
+      description: Admin users can get any post, regular users can only get their posts
+      operationId: getById
+      security:
+        - bearearAuth: []
+      responses:
+        "200":
+          description: Details of the specified post
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                    id:
+                      type: string
+                      example: "5eb12e197e06a76ccdefc121"
+                    title:
+                      type: string
+                      example: "My first post!"
+                    createdAt:
+                      type: string
+                      example: "2021-11-08 11:25:30"
+                    updatedAt:
+                      type: string
+                      example: "2021-11-08 15:15:30"
+                    content:
+                      type: string
+                      example: "Lorem Ipsum Doler Set Amit"
+                    author:
+                      type: string
+                      example: "5eb12e197e06a76ccdefc121"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    patch:      
+      summary: Updated specified post.
+      description: Admins can update any post, regular users can only update their post.
+      security:
+        - bearearAuth: []
+      responses:
+        "200":
+          description: Details of the updated post
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                    id:
+                      type: string
+                      example: "5eb12e197e06a76ccdefc121"
+                    title:
+                      type: string
+                      example: "My first post!"
+                    createdAt:
+                      type: string
+                      example: "2021-11-08 11:25:30"
+                    updatedAt:
+                      type: string
+                      example: "2021-11-08 15:15:30"
+                    content:
+                      type: string
+                      example: "Lorem Ipsum Doler Set Amit"
+                    author:
+                      type: string
+                      example: "5eb12e197e06a76ccdefc121"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    delete:
+      summary: Deletes a post
+      description: Admin users can delete any post, regular users can only delete their posts
+      security:
+        - bearerAuth: []
+      responses:
+        "204":
+          description: Nothing is returned. 204 No Content is sent.
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
   /api/v1/users/authenticate:
     post:
       summary: Authenticate user credentials and return a JWT token and a cookie with a refresh token
@@ -330,3 +505,5 @@ components:
               message:
                 type: string
                 example: "Not Found"
+security:
+    - bearerAuth: []

@@ -20,6 +20,7 @@ export default router;
 
 // helpers
 
+
 function postSchema(req: Request, res: Response, next: NextFunction) {
     const schema = Joi.object({
         title: Joi.string().required(),
@@ -37,7 +38,7 @@ function getAll(req: Request, res: Response, next: NextFunction) {
         .catch(next);
 };
 
-function getById(req: Request, res: Response, next: NextFunction) {
+function getById(req: any, res: Response, next: NextFunction) {
     // regular users can get their own posts and admins can get any post
     if (req.params.id !== req.post.id && req.user.role !== Role.Admin) {
         return res.status(401).json({ message: 'Unauthorized' });
@@ -48,7 +49,7 @@ function getById(req: Request, res: Response, next: NextFunction) {
         .catch(next);
 }
 
-function create(req: Request, res: Response, next: NextFunction) {
+function create(req: any, res: Response, next: NextFunction) {
     const newPost: Post = req.post;
     postService.create(newPost)
         .then(post => {
@@ -58,13 +59,13 @@ function create(req: Request, res: Response, next: NextFunction) {
         .catch(next);
 }
 
-function update(req: Request, res: Response, next: NextFunction) {
+function update(req: any, res: Response, next: NextFunction) {
     postService.update(req.post.id, req.post)
         .then(post => res.status(200).json(post))
         .catch(next);
 }
 
-function _delete(req: Request, res: Response, next: NextFunction) {
+function _delete(req: any, res: Response, next: NextFunction) {
     postService._delete(req.params.id)
         .then(_ => res.status(204).end())
         .catch(next);
