@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import db from '../_helpers/db';
-import { IUserProps } from '../models/user.model';
+import { User } from '../models/user.model';
 
 export interface IUserServiceProps {
     id?: string,
@@ -125,7 +125,7 @@ function randomTokenString() {
     return crypto.randomBytes(40).toString('hex');
 }
 
-function basicDetails(user: IUserProps) {
+function basicDetails(user: User) {
     const { id, firstName, lastName, username, role } = user;
     return { id, firstName, lastName, username, role };
 }

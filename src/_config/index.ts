@@ -8,6 +8,7 @@ dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 const envVarsSchema = Joi.object()
     .keys({
+        API_URL: Joi.string().required().description('Base API URL'),
         APP_SECRET: Joi.string().required().description('Secret key for cookie'),
         NODE_ENV: Joi.string().valid('production', 'development', 'test').required(),
         PORT: Joi.number().default(3000),
@@ -39,7 +40,7 @@ const emailConfigOptions = {
     smtp: {
         host: envVars.SMTP_HOST,
         port: envVars.SMTP_PORT,
-        auth_type: envVars.SMTP_AUTH_TYPE.toLower(),
+        auth_type: envVars.SMTP_AUTH_TYPE ? envVars.SMTP_AUTH_TYPE.toLowerCase() : '',
         auth: {},
     },
     from: envVars.EMAIL_FROM,
@@ -63,6 +64,7 @@ if (envVars.MONGODB_USER && envVars.MONGODB_PASS) {
 export default {
     env: envVars.NODE_ENV,
     app: {
+        api_url: envVars.API_URL,
         secret: envVars.APP_SECRET,
     },
     port: envVars.PORT,

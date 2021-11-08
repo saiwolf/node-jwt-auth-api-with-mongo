@@ -7,6 +7,7 @@ import morganMiddleware from './_middleware/morgan';
 
 
 import usersController from './controllers/user.controller';
+import postsController from './controllers/post.controller';
 import swaggerDocs from './_helpers/swagger';
 
 import createTestUser from './_helpers/create-test-user';
@@ -25,10 +26,11 @@ app.use(helmet());
 app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
 
 // api routes
-app.use('/users', usersController);
+app.use('/api/v1/users', usersController);
+app.use('/api/v1/posts', postsController);
 
 // swagger docs route
-app.use('/api-docs', swaggerDocs);
+app.use('/api/v1/docs', swaggerDocs);
 
 // global error handler
 app.use(errorHandler);

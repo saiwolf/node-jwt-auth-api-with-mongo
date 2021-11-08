@@ -1,12 +1,13 @@
-import mongoose, { Document, Schema, Model } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
-export interface IUserProps {
+export interface User {
     id: string,
     firstName: string,
     lastName: string,
     username: string,
     passwordHash: string,
     role: string,
+    posts: [{}],
 }
 
 const schema: Schema = new Schema({
@@ -14,7 +15,8 @@ const schema: Schema = new Schema({
     lastName: { type: String, required: true },
     username: { type: String, unique: true, required: true },
     passwordHash: { type: String, required: true },
-    role: { type: String, required: true }
+    role: { type: String, required: true },
+    posts: [{ type: Schema.Types.ObjectId, ref: 'Post'}]
 });
 
 schema.set('toJSON', {

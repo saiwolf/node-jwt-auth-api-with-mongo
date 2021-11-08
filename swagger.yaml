@@ -8,7 +8,7 @@ servers:
     description: Local development server
 
 paths:
-  /users/authenticate:
+  /api/v1/users/authenticate:
     post:
       summary: Authenticate user credentials and return a JWT token and a cookie with a refresh token
       operationId: authenticate
@@ -70,7 +70,7 @@ paths:
                   message:
                     type: string
                     example: "Username or password is incorrect"
-  /users/refresh-token:
+  /api/v1/users/refresh-token:
     post:
       summary: Use a refresh token to generate a new JWT token and a new refresh token
       description: The refresh token is sent and returned via cookies.
@@ -124,7 +124,7 @@ paths:
                   message:
                     type: string
                     example: "Invalid token"
-  /users/revoke-token:
+  /api/v1/users/revoke-token:
     post:
       summary: Revoke a refresh token
       description: Admin users can revoke the tokens of any user, regular users can only revoke their own tokens.
@@ -170,7 +170,7 @@ paths:
                     example: "Invalid token"
         "401":
           $ref: "#/components/responses/UnauthorizedError"
-  /users:
+  /api/v1/users:
     get:
       summary: Get a list of all users
       description: Restricted to admin users.
@@ -204,7 +204,7 @@ paths:
                       example: "Admin"
         "401":
           $ref: "#/components/responses/UnauthorizedError"
-  /users/{id}:
+  /api/v1/users/{id}:
     parameters:
       - in: path
         name: id
@@ -246,7 +246,7 @@ paths:
           $ref: "#/components/responses/NotFoundError"
         "401":
           $ref: "#/components/responses/UnauthorizedError"
-  /users/{id}/refresh-tokens:
+  /api/v1/users/{id}/refresh-tokens:
     parameters:
       - in: path
         name: id
